@@ -1,14 +1,13 @@
-import React from 'react';
-import { useState } from 'react';
-import { View, Text, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
+import React, { useState } from 'react';
+import { ActivityIndicator, FlatList, Text, TouchableOpacity, View } from 'react-native';
 
 import styles from './popularjobs.style';
 
 import { COLORS, SIZES } from "../../../constants";
 
-import PopularJobCard from "../../common/cards/popular/PopularJobCard";
 import useFetch from '../../../hooks/useFetch';
+import PopularJobCard from "../../common/cards/popular/PopularJobCard";
 
 const Popularjobs = () => {
   const router = useRouter();
@@ -20,8 +19,12 @@ const Popularjobs = () => {
   }
   );
 
-  console.log(data);
+  const [selectedJob, setSelectedJob] = useState();
 
+  const handleCardPress = (item) => {
+    router.push(`/job-details/${item.job_id}`);
+    setSelectedJob(item.job_id);
+  }
 
   return (
     <View style={styles.container}>
@@ -50,6 +53,8 @@ const Popularjobs = () => {
                   renderItem={({ item }) => (
                     <PopularJobCard
                       item={item}
+                      handleCardPress={handleCardPress}
+                      selectedJob={selectedJob}
                     />
                   )}
                 />
